@@ -29,7 +29,7 @@ class AuthState extends ChangeNotifier {
     }
   }
 
-  Future<bool> login(String email, String pass) async {
+  Future<bool> login(String email, String pass, String token) async {
     if (email.isEmpty || pass.isEmpty) return false;
 
     final fakeJwt = "FAKE.JWT.TOKEN.${DateTime.now().millisecondsSinceEpoch}";
