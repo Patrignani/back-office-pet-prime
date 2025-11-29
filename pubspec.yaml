@@ -1,0 +1,16 @@
+
+name: back_office
+version: 1.0.0
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  web: ^0.5.1
+  flutter:
+    sdk: flutter
+  go_router: ^14.2.0
+  flutter_web_plugins:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
