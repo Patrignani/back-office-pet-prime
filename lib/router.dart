@@ -5,6 +5,7 @@ import 'auth/auth_state.dart';
 import 'pages/login_page.dart';
 import 'pages/home_shell.dart';
 import 'pages/dashboard_page.dart';
+import 'pages/accounts_user_page.dart';
 
 GoRouter createRouter(AuthState auth) {
   return GoRouter(
@@ -23,6 +24,7 @@ GoRouter createRouter(AuthState auth) {
         builder: (_, __, child) => HomeShell(child: child),
         routes: [
           GoRoute(path: '/', builder: (_, __) => const DashboardPage()),
+                GoRoute(path: '/accounts-users',builder: (context, state) => const AccountsUserPage()),
         ],
       ),
     ],

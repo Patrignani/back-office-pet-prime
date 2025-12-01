@@ -1,16 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:web/web.dart' as web;
+import '../services/auth.dart';
 
 class AuthState extends ChangeNotifier {
   static const key = "jwt_token";
 
   bool _logged = false;
   String? _token;
-  String? _userName; // <- adiciona isso
+  String? _userName;
 
   bool get isLoggedIn => _logged;
   String? get token => _token;
-  String? get userName => _userName; // <- getter pro UI usar
+  String? get userName => _userName;
 
   AuthState() {
     _loadToken();
@@ -23,24 +24,30 @@ class AuthState extends ChangeNotifier {
     if (stored != null && stored.isNotEmpty) {
       _token = stored;
       _logged = true;
-      // se quiser, poderia decodificar o token e extrair usuário aqui
-      _userName = 'Usuário'; // por enquanto fixo
+      _userName = 'Usuário';
       notifyListeners();
     }
   }
 
-  Future<bool> login(String email, String pass, String token) async {
-    if (email.isEmpty || pass.isEmpty) return false;
+  Future<bool> login(String user, String pass, String token) async {
+    final response = await AuthService.login(
+      user: user,
+      pass: pass,
+      token: token,
+    );
 
-    final fakeJwt = "FAKE.JWT.TOKEN.${DateTime.now().millisecondsSinceEpoch}";
+    if (response == null) return false;
+
+    final jwt = response["access_token"];
 
     final storage = web.window.localStorage;
-    storage.setItem(key, fakeJwt);
+    storage.setItem(key, jwt);
 
-    _token = fakeJwt;
+    _token = jwt;
+    _userName = user;
     _logged = true;
-    _userName = email; // <- guarda o e-mail como nome de usuário
     notifyListeners();
+
     return true;
   }
 

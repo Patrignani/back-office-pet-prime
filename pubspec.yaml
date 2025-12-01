@@ -8,6 +8,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  http: ^1.2.1
   web: ^0.5.1
   go_router: ^14.2.0
   flutter_web_plugins:
@@ -18,3 +19,5 @@ flutter:
 
   assets:
     - assets/images/logo.png
+    - assets/config.json
+
