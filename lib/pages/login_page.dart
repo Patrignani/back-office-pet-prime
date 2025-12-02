@@ -182,23 +182,6 @@ class _LoginPageState extends State<LoginPage> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  onFieldSubmitted: (value) => _submit(),
-                  textInputAction: TextInputAction.done,
-                  controller: _tokenCtrl,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Token',
-                    prefixIcon: Icon(Icons.lock_clock),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Informe o token';
-                    }
-                    return null;
-                  },
-                ),
                 const SizedBox(height: 12),
                 SizedBox(
                   height: 20,
