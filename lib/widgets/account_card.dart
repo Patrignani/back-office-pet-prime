@@ -93,7 +93,7 @@ class AccountCard extends StatelessWidget {
                             Icon(Icons.circle, size: 8, color: color),
                             const SizedBox(width: 6),
                             Text(
-                              item.statusSlag,
+                              item.statusSlug,
                               style: TextStyle(
                                 color: color,
                                 fontWeight: FontWeight.w500,
