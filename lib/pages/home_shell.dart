@@ -34,6 +34,11 @@ class _HomeShellState extends State<HomeShell> {
     location: '/accounts-users',
   ),
   _MenuItem(
+    icon: Icons.grid_view,
+    label: 'Modulos',
+    location: '/modules',
+  ),
+  _MenuItem(
     icon: Icons.people_alt_outlined,
     label: 'Usuários',
     location: '/usuarios',

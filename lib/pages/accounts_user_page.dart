@@ -158,322 +158,335 @@ Future<void> _fetchAccounts() async {
     _fetchAccounts();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+@override
+Widget build(BuildContext context) {
+  final theme = Theme.of(context);
 
-    final width = MediaQuery.of(context).size.width;
-    final isMobile = width < 600;
-    final isTablet = width >= 600 && width < 1024;
+  final width = MediaQuery.of(context).size.width;
+  final isMobile = width < 600;
+  final isTablet = width >= 600 && width < 1024;
 
-    final crossAxisCount = isMobile
-        ? 1
-        : isTablet
-            ? 2
-            : 3;
+  final crossAxisCount = isMobile
+      ? 1
+      : isTablet
+          ? 2
+          : 3;
 
-    final childAspectRatio = isMobile
-        ? 1.4
-        : isTablet
-            ? 1.1
-            : 1.6;
+  final childAspectRatio = isMobile
+      ? 0.9
+      : isTablet
+          ? 1.1
+          : 1.3;
 
-    final items = paginator?.data ?? [];
+  final items = paginator?.data ?? [];
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Contas dos Usuários",
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w600,
+  return SingleChildScrollView(
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              'Contas dos Usuários',
+              style: theme.textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
-          Card(
-            child: Column(
-              children: [
-                InkWell(
-                  onTap: () {
-                    setState(() => _showFilters = !_showFilters);
-                  },
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    child: Row(
-                      children: [
-                        Icon(
-                          _showFilters
-                              ? Icons.keyboard_arrow_up
-                              : Icons.keyboard_arrow_down,
-                        ),
-                        const SizedBox(width: 8),
-                        const Text("Filtros de pesquisa"),
-                        const Spacer(),
-                        TextButton(
-                          onPressed: _clearFilters,
-                          child: const Text("Limpar"),
-                        ),
-                        const SizedBox(width: 8),
-                        FilledButton(
-                          onPressed: _applyFilters,
-                          child: const Text("Aplicar"),
-                        ),
-                      ],
-                    ),
+            const Spacer(),
+            FilledButton.icon(
+              onPressed: () {
+                context.go('/accounts-users/new');
+              },
+              icon: const Icon(Icons.add),
+              label: const Text('Nova conta'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Card(
+          child: Column(
+            children: [
+              InkWell(
+                onTap: () {
+                  setState(() => _showFilters = !_showFilters);
+                },
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Row(
+                    children: [
+                      Icon(
+                        _showFilters
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                      ),
+                      const SizedBox(width: 8),
+                      const Text('Filtros de pesquisa'),
+                      const Spacer(),
+                      TextButton(
+                        onPressed: _clearFilters,
+                        child: const Text('Limpar'),
+                      ),
+                      const SizedBox(width: 8),
+                      FilledButton(
+                        onPressed: _applyFilters,
+                        child: const Text('Aplicar'),
+                      ),
+                    ],
                   ),
                 ),
-                AnimatedCrossFade(
-                  firstChild: const SizedBox.shrink(),
-                  secondChild: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final filtersIsWide = constraints.maxWidth > 700;
-                        return Wrap(
-                          spacing: 16,
-                          runSpacing: 16,
-                          children: [
-                            SizedBox(
-                              width:
-                                  filtersIsWide ? 260 : double.infinity,
-                              child: TextField(
-                                controller: _nameCtrl,
-                                decoration: const InputDecoration(
-                                  labelText: "Nome",
-                                  prefixIcon: Icon(Icons.search),
-                                ),
+              ),
+              AnimatedCrossFade(
+                firstChild: const SizedBox.shrink(),
+                secondChild: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final isWide = constraints.maxWidth > 700;
+                      return Wrap(
+                        spacing: 16,
+                        runSpacing: 16,
+                        children: [
+                          SizedBox(
+                            width: isWide ? 260 : double.infinity,
+                            child: TextField(
+                              controller: _nameCtrl,
+                              decoration: const InputDecoration(
+                                labelText: 'Nome',
+                                prefixIcon: Icon(Icons.search),
                               ),
                             ),
-                            SizedBox(
-                              width:
-                                  filtersIsWide ? 200 : double.infinity,
-                              child: DropdownButtonFormField<String>(
-                                value: _selectedStatusId,
-                                decoration: const InputDecoration(
-                                  labelText: 'Status',
-                                ),
-                                items: const [
-                                  DropdownMenuItem(
-                                    value: '1',
-                                    child: Text('Ativo'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: '2',
-                                    child: Text('Inativo'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: '3',
-                                    child: Text('Pendente'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: '4',
-                                    child: Text('Bloqueado'),
-                                  ),
-                                ],
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedStatusId = value;
-                                  });
-                                },
+                          ),
+                          SizedBox(
+                            width: isWide ? 200 : double.infinity,
+                            child: DropdownButtonFormField<String>(
+                              value: _selectedStatusId,
+                              decoration: const InputDecoration(
+                                labelText: 'Status',
                               ),
-                            ),
-                            SizedBox(
-                              width:
-                                  filtersIsWide ? 200 : double.infinity,
-                              child: TextField(
-                                controller: _createdAtCtrl,
-                                readOnly: true,
-                                decoration: const InputDecoration(
-                                  labelText: 'Criado em',
-                                  suffixIcon: Icon(Icons.date_range),
+                              items: const [
+                                DropdownMenuItem(
+                                  value: '1',
+                                  child: Text('Ativo'),
                                 ),
-                                onTap: () {
-                                  _pickDate(
-                                    controller: _createdAtCtrl,
-                                    current: _createdAt,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _createdAt = value;
-                                      });
-                                    },
-                                  );
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              width:
-                                  filtersIsWide ? 220 : double.infinity,
-                              child: TextField(
-                                controller: _statusUpdatedAtCtrl,
-                                readOnly: true,
-                                decoration: const InputDecoration(
-                                  labelText: 'Status atualizado em',
-                                  suffixIcon: Icon(Icons.date_range),
+                                DropdownMenuItem(
+                                  value: '2',
+                                  child: Text('Inativo'),
                                 ),
-                                onTap: () {
-                                  _pickDate(
-                                    controller: _statusUpdatedAtCtrl,
-                                    current: _statusUpdatedAt,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _statusUpdatedAt = value;
-                                      });
-                                    },
-                                  );
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              width:
-                                  filtersIsWide ? 140 : double.infinity,
-                              child: DropdownButtonFormField<int>(
-                                value: perPage,
-                                decoration: const InputDecoration(
-                                  labelText: 'Por página',
+                                DropdownMenuItem(
+                                  value: '3',
+                                  child: Text('Pendente'),
                                 ),
-                                items: const [
-                                  DropdownMenuItem(
-                                    value: 6,
-                                    child: Text('6'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: 12,
-                                    child: Text('12'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: 24,
-                                    child: Text('24'),
-                                  ),
-                                ],
-                                onChanged: (value) {
-                                  if (value == null) return;
-                                  setState(() {
-                                    perPage = value;
-                                    page = 1;
-                                  });
-                                  _fetchAccounts();
-                                },
-                              ),
+                                DropdownMenuItem(
+                                  value: '4',
+                                  child: Text('Bloqueado'),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedStatusId = value;
+                                });
+                              },
                             ),
-                          ],
-                        );
-                      },
-                    ),
+                          ),
+                          SizedBox(
+                            width: isWide ? 200 : double.infinity,
+                            child: TextField(
+                              controller: _createdAtCtrl,
+                              readOnly: true,
+                              decoration: const InputDecoration(
+                                labelText: 'Criado em',
+                                suffixIcon: Icon(Icons.date_range),
+                              ),
+                              onTap: () {
+                                _pickDate(
+                                  controller: _createdAtCtrl,
+                                  current: _createdAt,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _createdAt = value;
+                                    });
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: isWide ? 220 : double.infinity,
+                            child: TextField(
+                              controller: _statusUpdatedAtCtrl,
+                              readOnly: true,
+                              decoration: const InputDecoration(
+                                labelText: 'Status atualizado em',
+                                suffixIcon: Icon(Icons.date_range),
+                              ),
+                              onTap: () {
+                                _pickDate(
+                                  controller: _statusUpdatedAtCtrl,
+                                  current: _statusUpdatedAt,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _statusUpdatedAt = value;
+                                    });
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: isWide ? 140 : double.infinity,
+                            child: DropdownButtonFormField<int>(
+                              value: perPage,
+                              decoration: const InputDecoration(
+                                labelText: 'Por página',
+                              ),
+                              items: const [
+                                DropdownMenuItem(
+                                  value: 6,
+                                  child: Text('6'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 12,
+                                  child: Text('12'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 24,
+                                  child: Text('24'),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                if (value == null) return;
+                                setState(() {
+                                  perPage = value;
+                                  page = 1;
+                                });
+                                _fetchAccounts();
+                              },
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
-                  crossFadeState: _showFilters
-                      ? CrossFadeState.showSecond
-                      : CrossFadeState.showFirst,
-                  duration: const Duration(milliseconds: 200),
+                ),
+                crossFadeState: _showFilters
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst,
+                duration: const Duration(milliseconds: 200),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        if (_loading)
+          const Padding(
+            padding: EdgeInsets.all(24),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          )
+        else if (_error != null)
+          Padding(
+            padding: const EdgeInsets.all(24),
+            child: Center(
+              child: Text(_error!),
+            ),
+          )
+        else if (items.isEmpty)
+          const Card(
+            child: Padding(
+              padding: EdgeInsets.all(24),
+              child: Center(
+                child: Text('Nenhuma conta encontrada.'),
+              ),
+            ),
+          )
+        else
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: items.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              childAspectRatio: childAspectRatio,
+            ),
+            itemBuilder: (_, index) {
+              final account = items[index];
+              return AccountCard(
+                item: account,
+                onPressed: () {
+                  context.go('/accounts-users/${account.id}');
+                },
+                onMore: () {
+                  // por enquanto pode ficar vazio ou chamar o mesmo details
+                  context.go('/accounts-users/${account.id}');
+                },
+              );
+            },
+          ),
+        const SizedBox(height: 24),
+        Align(
+          alignment: Alignment.centerRight,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surface,
+              borderRadius: BorderRadius.circular(999),
+              border: Border.all(
+                color: theme.colorScheme.outlineVariant,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.04),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Página $page de $_totalPages',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                _PageIconButton(
+                  icon: Icons.chevron_left,
+                  enabled: page > 1,
+                  onTap: () {
+                    if (page <= 1) return;
+                    setState(() {
+                      page--;
+                    });
+                    _fetchAccounts();
+                  },
+                ),
+                const SizedBox(width: 4),
+                _PageIconButton(
+                  icon: Icons.chevron_right,
+                  enabled: page < _totalPages,
+                  onTap: () {
+                    if (page >= _totalPages) return;
+                    setState(() {
+                      page++;
+                    });
+                    _fetchAccounts();
+                  },
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
-          if (_loading)
-            const Padding(
-              padding: EdgeInsets.all(24),
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            )
-          else if (_error != null)
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Center(
-                child: Text(_error!),
-              ),
-            )
-          else if (items.isEmpty)
-            const Card(
-              child: Padding(
-                padding: EdgeInsets.all(24),
-                child: Center(
-                  child: Text("Nenhuma conta encontrada."),
-                ),
-              ),
-            )
-          else
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: items.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: crossAxisCount,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: childAspectRatio,
-              ),
-              itemBuilder: (_, index) {
-                return AccountCard(
-                  item: items[index],
-                  onPressed: () {},
-                  onMore: () {},
-                );
-              },
-            ),
-          const SizedBox(height: 24),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(999),
-                border: Border.all(
-                  color: theme.colorScheme.outlineVariant,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "Página $page de $_totalPages",
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  _PageIconButton(
-                    icon: Icons.chevron_left,
-                    enabled: page > 1,
-                    onTap: () {
-                      if (page <= 1) return;
-                      setState(() {
-                        page--;
-                      });
-                      _fetchAccounts();
-                    },
-                  ),
-                  const SizedBox(width: 4),
-                  _PageIconButton(
-                    icon: Icons.chevron_right,
-                    enabled: page < _totalPages,
-                    onTap: () {
-                      if (page >= _totalPages) return;
-                      setState(() {
-                        page++;
-                      });
-                      _fetchAccounts();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 }
 
 class _PageIconButton extends StatelessWidget {

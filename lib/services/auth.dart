@@ -1,7 +1,6 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import '../config/app_config.dart';
-import '../core/http_client.dart'; // <-- IMPORT DO CLIENT GLOBAL
+import '../core/http_client.dart'; 
 
 class AuthService {
   static final _base = AppConfig.authUrl;

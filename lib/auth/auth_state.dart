@@ -4,6 +4,7 @@ import '../services/auth.dart';
 
 class AuthState extends ChangeNotifier {
   static const key = "jwt_token";
+  static const name = "name";
 
   bool _logged = false;
   String? _token;
@@ -20,11 +21,12 @@ class AuthState extends ChangeNotifier {
   void _loadToken() {
     final storage = web.window.localStorage;
     final stored = storage.getItem(key);
+    final nameStore = storage.getItem(name);
 
     if (stored != null && stored.isNotEmpty) {
       _token = stored;
       _logged = true;
-      _userName = 'Usuário';
+      _userName = nameStore ?? 'Usuário';
       notifyListeners();
     }
   }
@@ -42,6 +44,7 @@ class AuthState extends ChangeNotifier {
 
     final storage = web.window.localStorage;
     storage.setItem(key, jwt);
+    storage.setItem(name, user);
 
     _token = jwt;
     _userName = user;
