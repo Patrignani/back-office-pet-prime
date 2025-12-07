@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/modules/module_get_all.dart';
 import 'entity_card.dart';
 import '../../core/utils/money_utils.dart';
-import '../services/module_Service.dart';
+import '../services/module_service.dart';
 import 'package:go_router/go_router.dart';
 import '../auth/auth_scope.dart';
 import '../core/exceptions.dart';

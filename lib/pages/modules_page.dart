@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/modules/module_get_all.dart';
 import '../models/paginator.dart';
 import '../widgets/module_card.dart';
-import '../services/module_Service.dart';
+import '../services/module_service.dart';
 import '../auth/auth_scope.dart';
 import '../core/exceptions.dart';
 import 'package:go_router/go_router.dart';

@@ -5,7 +5,7 @@ import '../auth/auth_scope.dart';
 import '../models/modules_slug/module_slug_get_all.dart';
 import '../core/formatters/money_input_formatter.dart';
 import '../../core/utils/money_utils.dart';
-import '../services/module_Service.dart';
+import '../services/module_service.dart';
 import 'package:go_router/go_router.dart';
 import '../core/exceptions.dart';
 import 'package:logger/logger.dart';
