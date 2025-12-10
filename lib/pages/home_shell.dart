@@ -23,31 +23,31 @@ class _HomeShellState extends State<HomeShell> {
     final currentLocation = GoRouterState.of(context).uri.toString();
 
     final items = <_MenuItem>[
-     _MenuItem(
-    icon: Icons.dashboard_outlined,
-    label: 'Dashboard',
-    location: '/',
-  ),
-  _MenuItem(
-    icon: Icons.account_balance_wallet_outlined,
-    label: 'Contas dos Usuários',
-    location: '/accounts-users',
-  ),
-  _MenuItem(
-    icon: Icons.grid_view,
-    label: 'Modulos',
-    location: '/modules',
-  ),
-  _MenuItem(
-    icon: Icons.people_alt_outlined,
-    label: 'Usuários',
-    location: '/usuarios',
-  ),
-  _MenuItem(
-    icon: Icons.settings_outlined,
-    label: 'Configurações',
-    location: '/settings',
-  ),
+      _MenuItem(
+        icon: Icons.dashboard_outlined,
+        label: 'Dashboard',
+        location: '/',
+      ),
+      _MenuItem(
+        icon: Icons.account_balance_wallet_outlined,
+        label: 'Contas dos Usuários',
+        location: '/accounts-users',
+      ),
+      _MenuItem(
+        icon: Icons.grid_view,
+        label: 'Modulos',
+        location: '/modules',
+      ),
+      _MenuItem(
+        icon: Icons.people_alt_outlined,
+        label: 'Usuários',
+        location: '/users',
+      ),
+      _MenuItem(
+        icon: Icons.settings_outlined,
+        label: 'Configurações',
+        location: '/settings',
+      ),
     ];
 
     return LayoutBuilder(
@@ -102,8 +102,8 @@ class _HomeShellState extends State<HomeShell> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       child: Text(
                         'Menu',
                         style: theme.textTheme.titleMedium,
@@ -115,8 +115,8 @@ class _HomeShellState extends State<HomeShell> {
                         itemCount: items.length,
                         itemBuilder: (context, index) {
                           final item = items[index];
-                          final selected = index ==
-                              _selectedIndex(currentLocation, items);
+                          final selected =
+                              index == _selectedIndex(currentLocation, items);
                           return ListTile(
                             leading: Icon(item.icon),
                             title: Text(item.label),

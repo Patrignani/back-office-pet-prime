@@ -1,5 +1,6 @@
 import 'package:back_office/pages/modules_form_page.dart';
 import 'package:back_office/pages/modules_page.dart';
+import 'package:back_office/pages/users_page.dart';
 import 'package:back_office/widgets/app_form.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -29,6 +30,8 @@ GoRouter createRouter(AuthState auth) {
           GoRoute(
               path: '/accounts-users',
               builder: (context, state) => const AccountsUserPage()),
+          GoRoute(
+              path: '/users', builder: (context, state) => const UserPage()),
           GoRoute(
               path: '/modules',
               builder: (context, state) => const ModulesUserPage()),
